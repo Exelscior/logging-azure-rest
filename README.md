@@ -8,58 +8,19 @@ This package provides an asynchronous solution for uploading application logs to
 provided REST API, all supplied as a handler and service extension for python builtin `logging` module.
 
 The service works by instantiating an always-alive (non-daemonized) thread connected to a log request pool in which
-logs will be queued, then periodically running through the pool in order to send the requests asynchronously in bulk
-using the `grequests` package. This is all to intend logging safely without interrupting or slowing down the main
+logs will be queued, then periodically running through the pool in order to send the requests in bulk
+using the `requests` package. This is all to intend logging safely without interrupting or slowing down the main
 process execution as transparently as possible.
 
 ## Installation
 
 For installing via the distributed package via PyPi:
 
-`$ pip install logging-azure`
+`$ pip install logging-azure-rest`
 
 Or if you which to install from the source, you can checkout the git repository and install using `setuptools`:
 
 `$ python setup.py install`
-
-### Special conditions
-
-#### Installing GEvent
-
-If you require using this package within a docker distributed application image for example, you will
-be required to have an available compiler and necessary libraries in order to build `cython` and `gevent` needed for
-`grequests` to run.
-
-If using an Alpine image for example, this can be accomplished with the following:
-
-```dockerfile
-FROM python:3.7.4-alpine3.9
-
-# Install required dependencies for building like git etc.
-RUN apk add --virtual .build-dep build-base [...]
-
-# Install the python package
-RUN pip install --no-cache-dir logging-azure
-
-# Cleanup no-longer required dependencies for a lighter image
-RUN apk del .build-dep
-```
-
-#### GEvent monkey patching ssl
-
-As this package leverages the `grequests` package, which itself uses `gevent`, in several cases,
-like running in a debug Flask server, you may need to monkey patch `gevent` for things to work correctly.
-
-For this you just need to run the following **as early as possible** within your application:
-
-```python
-from gevent import monkey
-
-monkey.patch_all()
-```
-
-Usually, you are warned by `gevent` itself when running your application if this is needed or not done early enough,
-so it shouldn't be hard to miss.
 
 ## Usage
 
@@ -75,8 +36,6 @@ This will be suffixed with "_CL" within the Azure Log Workspace.
 The following environment variables are read to tweak some parameters of the extension,
 they all have default values and therefore are optional:
 
-- `AZURE_LOG_MAX_CONCURRENT_REQUESTS`: *Default: 10* The maximum number of asyncronous requests to handle at once.
-Used by `grequests`
 - `AZURE_LOG_SEND_FREQUENCY`: *Default: 5* How many seconds the service thread should wait before sending pooled logs.
 
 ### Logging Configuration
@@ -157,8 +116,6 @@ solution.
 
 ### Package requirements
 
-- [grequests](https://github.com/spyoungtech/grequests)
-- [gevent](https://github.com/gevent/gevent)
-- [cython](https://github.com/cython/cython)
+- [requests](https://github.com/psf/requests)
 - [injector](https://github.com/alecthomas/injector)
 

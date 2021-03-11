@@ -12,18 +12,18 @@ with open(path.join(HERE, "README.md"), encoding="utf-8") as f:
 
 if __name__ == "__main__":
     setup(
-        name="logging-azure",
+        name="logging-azure-rest",
         version=get_version(),
-        description="A python async logging handler and service extension for Azure Log Workspace OMS.",
+        description="A python threadded logging handler and service extension for Azure Log Workspace OMS REST API.",
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
         author="Joshua Logan",
-        author_email="joshua@matcha.wine",
+        author_email="joshua.logan@exelscior.eu",
         url="https://github.com/matchawine/logging-azure",
         packages=find_packages(),
         license="GPL",
         keywords="utils",
-        python_requires=">=3.7",
+        python_requires=">=3.9",
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "Environment :: Plugins",
@@ -34,5 +34,5 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.7",
             "Topic :: Software Development :: Libraries :: Python Modules",
         ],
-        install_requires=["injector>=0.18.2", "cython>=0.29.14", "grequests>=0.4.0"],
+        install_requires=["injector>=0.18.4", "requests>=2.25.1", "dataclasses-json>=0.5.2"],
     )

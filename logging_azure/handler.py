@@ -5,7 +5,7 @@ from .log_service import AzureLogService
 
 
 class AzureLogServiceHandler(StreamHandler):
-    _RFC1123DATE = "%a, %d %b %Y %H:%M:%S GMT"
+    _RFC1123DATE_WITH_MICRO = "%a, %d %b %Y %H:%M:%S.%f GMT"
 
     def __init__(self):
         self._log_service: AzureLogService = provide(AzureLogService)
@@ -13,7 +13,7 @@ class AzureLogServiceHandler(StreamHandler):
 
     def emit(self, record: LogRecord) -> None:
         message = self.format(record)
-        rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE)
+        rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE_WITH_MICRO)
         record_data = dict(
             level=record.levelname,
             message=message,

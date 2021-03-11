@@ -1,9 +1,9 @@
-import grequests
 import datetime
 import hashlib
 import hmac
 import base64
 import json
+from requests import Request, sessions
 from time import sleep
 from injector import singleton, inject
 from typing import Optional, List, Callable, Iterable, Dict, Any, Union
@@ -43,38 +43,37 @@ class AzureLogService:
         while True:
             worker_list = self._jobs.copy()
             requests = (self._build_request(record) for record in worker_list)
-            self._handle_requests(tasks=requests)
+            self._handle_requests(tasks=requests, timeout=self._configuration.single_request_timeout)
             self._clean_queue(worker_list)
             sleep(self._configuration.send_frequency)
 
     def _handle_requests(
         self,
         tasks: Iterable[AzureLogRecord],
-        stream: bool = False,
         exception_handler: Callable = None,
-        gtimeout: Optional[int] = None,
+        timeout: int = 5,
     ) -> None:
         """Concurrently handles a collection of AzureLogRecords to convert the requests to responses.
 
         :param tasks: a collection of AzureLogRecord objects.
-        :param stream: If True, the content will not be downloaded immediately.
         :param exception_handler: Callback function, called when exception occured. Params: Request, Exception
-        :param gtimeout: Gevent joinall timeout in seconds. (Note: unrelated to requests timeout)
+        :param timeout: Request timeout in seconds.
         """
 
         tasks = list(tasks)
 
-        pool = grequests.Pool(self._configuration.max_concurrent_requests)
-        jobs = [grequests.send(rec.log_request, pool, stream=stream) for rec in tasks]
-        grequests.gevent.joinall(jobs, timeout=gtimeout)
-
-        for record in tasks:
-            if record.log_request.response is not None:
-                record.log_response = record.log_request.response
-            elif exception_handler and hasattr(record.log_request, "exception"):
-                record.log_response = exception_handler(record.log_request, record.log_request.exception)
-            else:
-                record.log_response = None
+        if not tasks:
+            return
+        with sessions.Session() as session:
+            for record in tasks:
+                request = session.prepare_request(record.log_request)
+                record.log_response = session.send(request, timeout=timeout)
+                if record.log_response:
+                    continue
+                if exception_handler and hasattr(record.log_request, "exception"):
+                    record.log_response = exception_handler(record.log_request, record.log_request.exception)
+                else:
+                    record.log_response = None
 
     def _build_uri(self) -> str:
         resource = self._RESOURCE
@@ -152,5 +151,5 @@ class AzureLogService:
         body_payload = json.dumps(body)
         headers = self._build_headers(body_payload, log_type)
 
-        record.log_request = grequests.post(uri, data=body_payload, headers=headers)
+        record.log_request = Request(method="POST", url=uri, data=body_payload, headers=headers)
         return record

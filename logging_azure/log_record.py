@@ -1,7 +1,6 @@
-from typing import Dict, Any, Callable, Optional
-from requests import Response
-from grequests import AsyncRequest
-from dataclasses import dataclass, field
+from typing import Optional
+from requests import Response, Request
+from dataclasses import dataclass
 from dataclasses_json import DataClassJsonMixin
 
 
@@ -19,7 +18,7 @@ class AzureLogRecord(DataClassJsonMixin):
     process_pid: int
     func_name: str
 
-    log_request: Optional[AsyncRequest] = None
+    log_request: Optional[Request] = None
     log_response: Optional[Response] = None
 
     def __hash__(self):

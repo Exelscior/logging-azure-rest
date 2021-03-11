@@ -1,6 +1,6 @@
-from typing import Type, Any
+from typing import Type
 
-from injector import Injector, Binder
+from injector import Injector, Binder, T
 
 
 def configure(binder: Binder) -> None:
@@ -12,5 +12,5 @@ def configure(binder: Binder) -> None:
 __injector = Injector(configure)
 
 
-def provide(class_: Type[Any]):
+def provide(class_: Type[T]):
     return __injector.get(class_)

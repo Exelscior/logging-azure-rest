@@ -3,9 +3,9 @@ repos:
     rev: 19.3b0
     hooks:
     - id: black
-      language_version: python3.7
+      language_version: python3.9
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
     - id: flake8
-      language_version: python3.7
+      language_version: python3.9
