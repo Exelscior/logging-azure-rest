@@ -1,7 +1,7 @@
 # Python Logging Azure Workspace OMS Extension
 
-[![Python](https://img.shields.io/pypi/pyversions/logging-azure.svg)](https://pypi.python.org/pypi/logging-azure)
-[![Version](http://img.shields.io/pypi/v/logging-azure.svg)](https://pypi.python.org/pypi/logging-azure)
+[![Python](https://img.shields.io/pypi/pyversions/logging-azure-rest.svg)](https://pypi.python.org/pypi/logging-azure-rest)
+[![Version](http://img.shields.io/pypi/v/logging-azure-rest.svg)](https://pypi.python.org/pypi/logging-azure-rest)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 This package provides an asynchronous solution for uploading application logs to an Azure Log Workspace using their
