@@ -1,4 +1,5 @@
 import datetime
+from copy import deepcopy
 from logging import StreamHandler, LogRecord
 from .service_provider import provide
 from .log_service import AzureLogService
@@ -14,7 +15,10 @@ class AzureLogServiceHandler(StreamHandler):
     def emit(self, record: LogRecord) -> None:
         message = self.format(record)
         rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE_WITH_MICRO)
-        record_data = dict(
+        record_data = dict()
+        if hasattr(record, "custom_record_data") and isinstance(record.custom_record_data, dict):
+            record_data = deepcopy(record.custom_record_data)
+        record_data.update(dict(
             level=record.levelname,
             message=message,
             time=rfc1123date,
@@ -25,5 +29,5 @@ class AzureLogServiceHandler(StreamHandler):
             process_name=record.processName,
             process_pid=record.process,
             func_name=record.funcName,
-        )
+        ))
         self._log_service.add_record(record_data)

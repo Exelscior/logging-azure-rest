@@ -76,7 +76,7 @@ Then add the handler to your selected logger instance:
 In order to prevent additional cost from Azure Log OMS ingestion for talkative applications, it is recommended to set
 an adequate LOG_LEVEL for your application (avoid `logging.DEBUG` for example).
 
-It is also recommended to configure your loggers appropriately so the `AzureLogServiveHandler` isn't used during
+It is also recommended configuring your loggers appropriately so the `AzureLogServiveHandler` isn't used during
 local development or CI environments for example.
 
 You are warned.

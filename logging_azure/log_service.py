@@ -42,6 +42,7 @@ class AzureLogService:
     def _run_worker(self) -> None:
         while True:
             worker_list = self._jobs.copy()
+            # TODO: Batch records into single request body up to 30Mo
             requests = (self._build_request(record) for record in worker_list)
             self._handle_requests(tasks=requests, timeout=self._configuration.single_request_timeout)
             self._clean_queue(worker_list)
