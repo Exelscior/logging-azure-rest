@@ -102,7 +102,7 @@ formatter that will only format the `message` itself as follows:
 
 This provides the following output within the Azure Portal for example:
 
-![AzureLogOMSExample](resources/log_azure_example.jpg)
+![AzureLogOMSExample](https://github.com/Exelscior/logging-azure-rest/blob/master/resources/log_azure_example.jpg)
 
 This allows for easily creating custom queries and alerts for your application directly from the Azure Log OMS
 solution.

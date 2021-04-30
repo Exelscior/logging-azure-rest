@@ -23,7 +23,7 @@ if __name__ == "__main__":
         packages=find_packages(),
         license="GPL",
         keywords="utils",
-        python_requires=">=3.9",
+        python_requires=">=3.7",
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "Environment :: Plugins",
@@ -31,7 +31,7 @@ if __name__ == "__main__":
             "License :: OSI Approved :: GNU General Public License (GPL)",
             "Operating System :: OS Independent",
             "Natural Language :: English",
-            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.7",
             "Topic :: Software Development :: Libraries :: Python Modules",
         ],
         install_requires=["injector>=0.18.4", "requests>=2.25.1", "dataclasses-json>=0.5.2"],
