@@ -28,7 +28,7 @@ if __name__ == "__main__":
             "Development Status :: 5 - Production/Stable",
             "Environment :: Plugins",
             "Intended Audience :: Developers",
-            "License :: OSI Approved :: GNU General Public License (GPL)",
+            "License :: OSI Approved :: MIT License",
             "Operating System :: OS Independent",
             "Natural Language :: English",
             "Programming Language :: Python :: 3.7",
