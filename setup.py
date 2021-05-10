@@ -21,7 +21,7 @@ if __name__ == "__main__":
         author_email="joshua.logan@exelscior.eu",
         url="https://github.com/Exelscior/logging-azure-rest",
         packages=find_packages(),
-        license="GPL",
+        license="MIT",
         keywords="utils",
         python_requires=">=3.7",
         classifiers=[
