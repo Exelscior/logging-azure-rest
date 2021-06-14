@@ -3,6 +3,7 @@ from copy import deepcopy
 from logging import StreamHandler, LogRecord
 from .service_provider import provide
 from .log_service import AzureLogService
+from .utils import setlocale
 
 
 class AzureLogServiceHandler(StreamHandler):
@@ -14,7 +15,8 @@ class AzureLogServiceHandler(StreamHandler):
 
     def emit(self, record: LogRecord) -> None:
         message = self.format(record)
-        rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE_WITH_MICRO)
+        with setlocale("C"):
+            rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE_WITH_MICRO)
         record_data = dict()
         if hasattr(record, "custom_record_data") and isinstance(record.custom_record_data, dict):
             record_data = deepcopy(record.custom_record_data)

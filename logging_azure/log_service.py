@@ -11,6 +11,7 @@ from threading import Thread
 from uuid import uuid4
 from .log_record import AzureLogRecord
 from .configuration import AzureLogServiceConfiguration
+from .utils import setlocale
 
 
 @singleton
@@ -116,7 +117,8 @@ class AzureLogService:
         :return: int: 0 on success, 1 on error
         """
 
-        rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE)
+        with setlocale("C"):
+            rfc1123date = datetime.datetime.utcnow().strftime(self._RFC1123DATE)
         content_length = len(body)
         method = "POST"
         content_type = "application/json"
